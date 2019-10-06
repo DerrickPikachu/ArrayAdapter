@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">ArrayAdapter</string>
+    <string-array name="drink_name">
+        <item>珍珠奶茶</item>
+        <item>波霸奶茶</item>
+        <item>仙草凍奶茶</item>
+        <item>檸檬汁</item>
+    </string-array>
+    <string name="order">下訂單</string>
 </resources>
