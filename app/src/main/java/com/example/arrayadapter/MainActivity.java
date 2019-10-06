@@ -17,10 +17,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
             if (i == 3) {
-                temperatureSpinner.setAdapter(drinkType2);
+                if (drinkAdapter.getCount() == 3) {
+                    drinkAdapter.remove("溫");
+                }
             }
-            else {
-                temperatureSpinner.setAdapter(drinkType1);
+            else if (drinkAdapter.getCount() == 2){
+                drinkAdapter.add("溫");
             }
         }
 
@@ -33,14 +35,7 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View view) {
             int pos = drinkSpinner.getSelectedItemPosition();
             String[] drinkList = getResources().getStringArray(R.array.drink_name);
-            String output = drinkList[pos] + ",";
-
-            if (pos == 3) {
-                output = output + drinkType2.getItem(temperatureSpinner.getSelectedItemPosition());
-            }
-            else {
-                output = output +drinkType1.getItem(temperatureSpinner.getSelectedItemPosition());
-            }
+            String output = drinkList[pos] + "," + drinkAdapter.getItem(temperatureSpinner.getSelectedItemPosition());
 
             result.setText(output);
         }
@@ -50,16 +45,14 @@ public class MainActivity extends AppCompatActivity {
     TextView result;
     Button orderBtn;
     Spinner drinkSpinner, temperatureSpinner;
-    ArrayAdapter drinkType1;
-    ArrayAdapter drinkType2;
+    ArrayAdapter<String> drinkAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String[] temType1 = {"冰", "去冰", "溫"};
-        String[] temType2 = {"冰", "去冰"};
+        String[] temList = {"冰", "去冰", "溫"};
 
         //get component
         result = findViewById(R.id.result);
@@ -71,16 +64,13 @@ public class MainActivity extends AppCompatActivity {
         orderBtn.setOnClickListener(listener);
         drinkSpinner.setOnItemSelectedListener(listener);
 
-        drinkType1 = setUpArrayAdapter(temType1);
-        drinkType2 = setUpArrayAdapter(temType2);
+        drinkAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
 
-        temperatureSpinner.setAdapter(drinkType1);
-    }
+        for (String s:temList)
+            drinkAdapter.add(s);
 
-    private ArrayAdapter setUpArrayAdapter(String[] list) {
-        ArrayAdapter newAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, list);
-        newAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        return newAdapter;
+        drinkAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        temperatureSpinner.setAdapter(drinkAdapter);
     }
 
 }
