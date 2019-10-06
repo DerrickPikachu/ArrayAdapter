@@ -33,10 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            int pos = drinkSpinner.getSelectedItemPosition();
-            String[] drinkList = getResources().getStringArray(R.array.drink_name);
-            String output = drinkList[pos] + "," + drinkAdapter.getItem(temperatureSpinner.getSelectedItemPosition());
-
+            String output = drinkSpinner.getSelectedItem().toString() + "," + temperatureSpinner.getSelectedItem().toString();
             result.setText(output);
         }
     }
@@ -46,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     Button orderBtn;
     Spinner drinkSpinner, temperatureSpinner;
     ArrayAdapter<String> drinkAdapter;
+    ArrayAdapter<String> typeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         String[] temList = {"冰", "去冰", "溫"};
+        String[] typeList = {"珍珠奶茶", "波霸奶茶", "仙草凍奶茶", "檸檬汁"};
 
         //get component
         result = findViewById(R.id.result);
@@ -65,12 +64,16 @@ public class MainActivity extends AppCompatActivity {
         drinkSpinner.setOnItemSelectedListener(listener);
 
         drinkAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item);
+        typeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, typeList);
 
         for (String s:temList)
             drinkAdapter.add(s);
 
         drinkAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         temperatureSpinner.setAdapter(drinkAdapter);
+        drinkSpinner.setAdapter(typeAdapter);
     }
 
 }
